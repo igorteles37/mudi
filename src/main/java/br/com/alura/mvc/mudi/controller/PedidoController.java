@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,20 +69,17 @@ public class PedidoController {
 		return "redirect:/home";
 	}
 	
-	@GetMapping("delete")
-	public ModelAndView delete(@RequestParam Long id) {
+	@GetMapping("delete/{id}")
+	public ModelAndView delete(@PathVariable Long id) {
 		ModelAndView mv;
 		mv = new ModelAndView("redirect:/home");
 
 		
 		Optional<Pedido> pedido =  pedidoRepository.findById(id);
 		
-		if (pedido.isPresent()) {
-			mv.addObject("mensagem", "Delete");
+		if (pedido.isPresent()) 
 			pedidoRepository.delete(pedido.get());
-		}
-		else
-			mv.addObject("mensagem", "Nao Deletado");
+		
 			
 		return mv;
 	}
