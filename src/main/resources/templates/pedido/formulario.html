@@ -6,6 +6,8 @@
 			<div th:replace="~{base :: titulo('Novo Pedido')}"></div>
 			<div th:replace="~{base :: menu}"></div>
 			
+			<div class="alert-success" th:text="${mensagem} == 'Sucesso' ? 'Pedido Cadastrado com sucesso'"></div>
+		
 			<div class="card mt-3" >
 				<form th:object="${pedidoForm}" class="card-body" action="/pedido/novo" method="POST">
 					<div class="form-group">
@@ -18,7 +20,7 @@
 					</div>
 					<div class="form-group">
 						<label for="urlProduto">Url</label> 
-						<input th:field="*{urlProduto}" th:errorclass="is-invalid" class="form-control" placeholder="url do produto" /> 
+						<input th:value="${mensagem} != null ? ''" th:field="*{urlProduto}" th:errorclass="is-invalid" class="form-control" placeholder="url do produto" /> 
 						<small>Procure em um site o produto que você deseja e cole a url da página aqui.</small>
 						<div  class="invalid-feedback" th:errors="*{urlProduto}">
 							Erros do Url Produto
@@ -35,7 +37,10 @@
 					
 					<div class="form-group">
 						<label for="descricao">Descricao</label> 
-						<textarea th:field="*{descricao}" class="form-control" placeholder="Adicione detalhes importantes para ajudar o comprador." ></textarea> 
+						<textarea th:field="*{descricao}" th:errorclass="is-invalid" class="form-control" placeholder="Adicione detalhes importantes para ajudar o comprador." ></textarea>
+						<div  class="invalid-feedback" th:errors="*{descricao}">
+							Erros da descrição
+						</div> 
 					</div>
 					
 					<button type="submit" value="Cadastrar" class="btn btn-primary">Cadastrar</button>

@@ -8,21 +8,23 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.Length;
+
 import br.com.alura.mvc.mudi.model.Pedido;
 import br.com.alura.mvc.mudi.model.StatusPedido;
 
 public class PedidoForm {
 	
-	@NotBlank 
+	@NotBlank @Length(min = 5, max = 255)
 	private String nomeProduto;
 	
-	@NotBlank 
+	@NotBlank  @Length(min = 5, max = 255)
 	private String urlProduto;
 	
-	@NotBlank 
+	@NotBlank @Length(min = 5, max = 255)
 	private String urlImagem;
 	
-	
+	@Length(max = 255)
 	private String descricao;
 	
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -61,8 +63,8 @@ public class PedidoForm {
 		pedido.setUrlImagem(this.getUrlImagem());
 		pedido.setDescricao(this.getDescricao());
 		pedido.setStatus(StatusPedido.AGUARDANDO);
-		pedido.setDataDaEntrega(dataEntrega);
-		pedido.setValorNegociado(new BigDecimal(5599.98));
+		//pedido.setDataDaEntrega(dataEntrega);
+		//pedido.setValorNegociado(new BigDecimal(5599.98));
 		
 		return pedido;
 		
