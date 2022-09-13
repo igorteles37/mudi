@@ -1,14 +1,8 @@
 package br.com.alura.mvc.mudi.controller;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException.MethodNotAllowed;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,7 +37,7 @@ public class PedidoController {
 	}
 	
 	@PostMapping("novo")
-	public ModelAndView novo(@Valid PedidoForm pedidoForm, BindingResult result, Model model) {
+	public ModelAndView inserir(@Valid PedidoForm pedidoForm, BindingResult result, Model model) {
 		ModelAndView mv;
 		if (result.hasErrors()) {
 			mv = new ModelAndView("pedido/formulario");
@@ -82,6 +75,45 @@ public class PedidoController {
 		
 			
 		return mv;
+	}
+	
+	
+	@GetMapping("atualizarform/{id}")
+	public String atualizarForm(PedidoForm pedidoForm, Model model, @PathVariable Long id) {
+		
+		Pedido pedido =  pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid pedido Id:" + id));;
+		
+		/*PedidoForm pedidoForm = new PedidoForm();
+		pedidoForm.setNomeProduto(pedido.getNomeProduto());
+		pedidoForm.setUrlProduto(pedido.getUrlProduto());
+		pedidoForm.setUrlImagem(pedido.getUrlImagem());
+		pedidoForm.setDescricao(pedido.getDescricao());
+		pedidoForm.setId(pedido.getId());*/
+		
+		model.addAttribute("pedidoForm", new PedidoForm(pedido.getNomeProduto(), pedido.getUrlProduto(), pedido.getUrlImagem(), pedido.getDescricao(), pedido.getId()));
+			
+		return "pedido/formulario_atualizacao";
+	}
+	
+	@PostMapping("atualizar/{id}")
+	public String atualizar(@Valid PedidoForm pedidoForm, BindingResult result, @PathVariable Long id, Model model) {
+		
+		if (result.hasErrors()) {
+			return "pedido/formulario_atualizacao";
+		}
+		
+	
+        Pedido pedidoOriginal = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid pedido Id:" + id));
+        
+        pedidoOriginal.setNomeProduto(pedidoForm.getNomeProduto());
+        pedidoOriginal.setUrlProduto(pedidoForm.getUrlProduto());
+        pedidoOriginal.setUrlImagem(pedidoForm.getUrlImagem());
+        pedidoOriginal.setDescricao(pedidoForm.getDescricao());
+        
+        pedidoRepository.save(pedidoOriginal);
+        return "redirect:/home"; 
+        
+		
 	}
 
 }

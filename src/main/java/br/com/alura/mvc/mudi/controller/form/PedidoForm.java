@@ -27,7 +27,23 @@ public class PedidoForm {
 	@Length(max = 255)
 	private String descricao;
 	
+	private Long id;
+	
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	
+	
+	
+	public PedidoForm(@NotBlank @Length(min = 5, max = 255) String nomeProduto,
+			@NotBlank @Length(min = 5, max = 255) String urlProduto,
+			@NotBlank @Length(min = 5, max = 255) String urlImagem, @Length(max = 255) String descricao, Long id) {
+		super();
+		this.nomeProduto = nomeProduto;
+		this.urlProduto = urlProduto;
+		this.urlImagem = urlImagem;
+		this.descricao = descricao;
+		this.id = id;
+	}
 	
 	public String getNomeProduto() {
 		return nomeProduto;
@@ -69,6 +85,15 @@ public class PedidoForm {
 		return pedido;
 		
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 	
 
 
