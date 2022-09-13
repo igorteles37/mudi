@@ -3,6 +3,7 @@ package br.com.alura.mvc.mudi.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -14,8 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException.MethodNotAllowed;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -63,6 +66,24 @@ public class PedidoController {
 	@ExceptionHandler(MethodNotAllowed.class)
 	public String onError() {
 		return "redirect:/home";
+	}
+	
+	@GetMapping("delete")
+	public ModelAndView delete(@RequestParam Long id) {
+		ModelAndView mv;
+		mv = new ModelAndView("redirect:/home");
+
+		
+		Optional<Pedido> pedido =  pedidoRepository.findById(id);
+		
+		if (pedido.isPresent()) {
+			mv.addObject("mensagem", "Delete");
+			pedidoRepository.delete(pedido.get());
+		}
+		else
+			mv.addObject("mensagem", "Nao Deletado");
+			
+		return mv;
 	}
 
 }
