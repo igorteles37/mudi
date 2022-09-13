@@ -4,12 +4,25 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 import br.com.alura.mvc.mudi.model.Pedido;
+import br.com.alura.mvc.mudi.model.StatusPedido;
 
 public class PedidoForm {
+	
+	@NotBlank 
 	private String nomeProduto;
+	
+	@NotBlank 
 	private String urlProduto;
+	
+	@NotBlank 
 	private String urlImagem;
+	
+	
 	private String descricao;
 	
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -47,6 +60,7 @@ public class PedidoForm {
 		pedido.setUrlProduto(this.getUrlProduto());
 		pedido.setUrlImagem(this.getUrlImagem());
 		pedido.setDescricao(this.getDescricao());
+		pedido.setStatus(StatusPedido.AGUARDANDO);
 		pedido.setDataDaEntrega(dataEntrega);
 		pedido.setValorNegociado(new BigDecimal(5599.98));
 		
