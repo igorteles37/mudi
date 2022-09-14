@@ -1,8 +1,10 @@
 package br.com.alura.mvc.mudi.controller.form;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -12,6 +14,8 @@ import org.hibernate.validator.constraints.Length;
 
 import br.com.alura.mvc.mudi.model.Pedido;
 import br.com.alura.mvc.mudi.model.StatusPedido;
+import br.com.alura.mvc.mudi.model.User;
+import br.com.alura.mvc.mudi.repository.UserRepository;
 
 public class PedidoForm {
 	
@@ -24,7 +28,7 @@ public class PedidoForm {
 	@NotBlank @Length(min = 5, max = 255)
 	private String urlImagem;
 	
-	@Length(max = 255)
+	@Length(max = 2000)
 	private String descricao;
 	
 	private Long id;
@@ -79,11 +83,8 @@ public class PedidoForm {
 		pedido.setUrlImagem(this.getUrlImagem());
 		pedido.setDescricao(this.getDescricao());
 		pedido.setStatus(StatusPedido.AGUARDANDO);
-		//pedido.setDataDaEntrega(dataEntrega);
-		//pedido.setValorNegociado(new BigDecimal(5599.98));
 		
 		return pedido;
-		
 	}
 	
 	public Long getId() {

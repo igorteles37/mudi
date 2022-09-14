@@ -1,10 +1,13 @@
 package br.com.alura.mvc.mudi.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.alura.mvc.mudi.controller.form.PedidoForm;
 import br.com.alura.mvc.mudi.model.Pedido;
+import br.com.alura.mvc.mudi.model.User;
 import br.com.alura.mvc.mudi.repository.PedidoReposotiry;
+import br.com.alura.mvc.mudi.repository.UserRepository;
 
 @Controller
 @RequestMapping("pedido")
@@ -28,6 +33,8 @@ public class PedidoController {
 	@Autowired
 	PedidoReposotiry pedidoRepository;
 	
+	@Autowired
+	UserRepository userRepository;
 	
 	
 	@GetMapping("formulario")
@@ -37,19 +44,27 @@ public class PedidoController {
 	}
 	
 	@PostMapping("novo")
-	public ModelAndView inserir(@Valid PedidoForm pedidoForm, BindingResult result, Model model) {
+	public ModelAndView inserir(@Valid PedidoForm pedidoForm, BindingResult result) {
 		ModelAndView mv;
 		if (result.hasErrors()) {
 			mv = new ModelAndView("pedido/formulario");
 			return mv;
 		}
 			
+		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		Pedido pedido  = pedidoForm.toPedido();
+		
+		Optional<User> user = userRepository.findById(userName);
+		
+		if (user.isPresent())
+			pedido.setUser(user.get());
+		else 
+			pedido.setUser(null);
+		
 		pedidoRepository.save(pedido);
 		
 		mv = new ModelAndView("/home");
-		
 	    mv.addObject("mensagem", "Sucesso");
 	    return mv; 
 		

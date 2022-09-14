@@ -1,5 +1,6 @@
 package br.com.alura.mvc.mudi.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class HomeController {
 	PedidoReposotiry pedidoRepository; 
 	
 	@GetMapping
-	public ModelAndView home(Model model) {
+	public ModelAndView home(Model model, Principal principal) {
 		
 		/*
 		Pedido pedido = new Pedido();
@@ -40,7 +41,7 @@ public class HomeController {
 		pedido2.setUrlProduto("https://www.amazon.com.br/Xiaomi-Redmi-Note-11-Graphite/dp/B09QSB4N2C/ref=sr_1_3?keywords=xiaomi+redmi+note+11&qid=1662079408&sprefix=Xiaomi+re%2Caps%2C131&sr=8-3&ufe=app_do%3Aamzn1.fos.25548f35-0de7-44b3-b28e-0f56f3f96147");
 		pedido2.setDescricao("Xiaomi Redmi Note 12 Graphite Gray 6GB Ram 128GB Rom");*/
 		
-		List<Pedido> pedidos =  pedidoRepository.findAll();
+		List<Pedido> pedidos =  pedidoRepository.findAllByUsuario(principal.getName());
 		
 		//List<Pedido> pedidos = Arrays.asList(pedido, pedido2);
 		
@@ -54,9 +55,9 @@ public class HomeController {
 	}
 	
 	@GetMapping("/{status}")
-	public ModelAndView buscarPorStatus(@PathVariable("status") String status, Model model) {
+	public ModelAndView buscarPorStatus(@PathVariable("status") String status, Model model, Principal principal) {
 		
-		List<Pedido> pedidos =  pedidoRepository.findByStatus(StatusPedido.valueOf(status.toUpperCase()));
+		List<Pedido> pedidos =  pedidoRepository.findByStatusAndUserUserName(StatusPedido.valueOf(status.toUpperCase()), principal.getName());
 		
 	    ModelAndView mv = new ModelAndView("home");
 	    mv.addObject("pedidos", pedidos);

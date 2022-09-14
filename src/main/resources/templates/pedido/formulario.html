@@ -9,7 +9,7 @@
 			<div class="alert-success" th:text="${mensagem} == 'Sucesso' ? 'Pedido Cadastrado com sucesso'"></div>
 		
 			<div class="card mt-3" >
-				<form th:object="${pedidoForm}" class="card-body" action="/pedido/novo" method="POST">
+				<form th:object="${pedidoForm}" class="card-body" th:action="@{/pedido/novo}" method="POST">
 					<div class="form-group">
 						<label for="nomeProduto">Produto</label> 
 						<input th:field="*{nomeProduto}" th:errorclass="is-invalid" class="form-control" placeholder="nome do produto" /> 
