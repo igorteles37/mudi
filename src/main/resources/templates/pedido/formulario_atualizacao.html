@@ -4,7 +4,6 @@
 		<div th:replace="~{base :: logo}"></div>
 		<div class="container">
 			<div th:replace="~{base :: titulo('Atualização Pedido')}"></div>
-			<div th:replace="~{base :: menu}"></div>
 			
 			<div class="card mt-3" >
 				<form th:object="${pedidoForm}" class="card-body" action="/home"  th:action="@{/pedido/atualizar/{id}(id=${pedidoForm.id})}" method="POST">
