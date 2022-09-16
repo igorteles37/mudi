@@ -1,12 +1,10 @@
 package br.com.alura.mvc.mudi.controller;
 
-import java.security.Principal;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,16 +37,16 @@ public class PedidoController {
 	
 	@GetMapping("formulario")
 	public String formulario(PedidoForm pedidoForm) {
-		
 		return "pedido/formulario";
 	}
 	
-	@PostMapping("novo")
+	@PostMapping("inserir")
 	public ModelAndView inserir(@Valid PedidoForm pedidoForm, BindingResult result) {
+
 		ModelAndView mv;
-		if (result.hasErrors()) {
-			mv = new ModelAndView("pedido/formulario");
-			return mv;
+		
+		if(result.hasErrors()) {
+			return mv = new ModelAndView("pedido/formulario");
 		}
 			
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -63,25 +61,19 @@ public class PedidoController {
 			pedido.setUser(null);
 		
 		pedidoRepository.save(pedido);
-		
-		mv = new ModelAndView("/home");
-	    mv.addObject("mensagem", "Sucesso");
-	    return mv; 
-		
-		//return "redirect:/home";
-		//return "pedido/formulario";
+		mv =  new ModelAndView("usuario/home");
+		mv.addObject("mensagem", "Sucesso");
+
+		return mv;
 	}
 	
 	@ExceptionHandler(MethodNotAllowed.class)
 	public String onError() {
-		return "redirect:/home";
+		return "redirect:/usuario/pedidos";
 	}
 	
 	@GetMapping("delete/{id}")
-	public ModelAndView delete(@PathVariable Long id) {
-		ModelAndView mv;
-		mv = new ModelAndView("redirect:/home");
-
+	public String delete(@PathVariable Long id) {
 		
 		Optional<Pedido> pedido =  pedidoRepository.findById(id);
 		
@@ -89,7 +81,7 @@ public class PedidoController {
 			pedidoRepository.delete(pedido.get());
 		
 			
-		return mv;
+		return "redirect:/usuario/pedidos";
 	}
 	
 	
@@ -126,7 +118,7 @@ public class PedidoController {
         pedidoOriginal.setDescricao(pedidoForm.getDescricao());
         
         pedidoRepository.save(pedidoOriginal);
-        return "redirect:/home"; 
+        return "redirect:/usuario/pedidos"; 
         
 		
 	}

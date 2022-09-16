@@ -24,45 +24,19 @@ public class HomeController {
 	PedidoReposotiry pedidoRepository; 
 	
 	@GetMapping
-	public ModelAndView home(Model model, Principal principal) {
-		
-		/*
-		Pedido pedido = new Pedido();
-		pedido.setNomeProduto("Xiaomi Redmi Note 11");
-		pedido.setValorNegociado(new BigDecimal(1350.00));
-		pedido.setUrlImagem("https://m.media-amazon.com/images/I/51e3KdrHuCL._AC_SL1080_.jpg");
-		pedido.setUrlProduto("https://www.amazon.com.br/Xiaomi-Redmi-Note-11-Graphite/dp/B09QSB4N2C/ref=sr_1_3?keywords=xiaomi+redmi+note+11&qid=1662079408&sprefix=Xiaomi+re%2Caps%2C131&sr=8-3&ufe=app_do%3Aamzn1.fos.25548f35-0de7-44b3-b28e-0f56f3f96147");
-		pedido.setDescricao("Xiaomi Redmi Note 11 Graphite Gray 6GB Ram 128GB Rom");
-		
-		Pedido pedido2 = new Pedido();
-		pedido2.setNomeProduto("Xiaomi Redmi Note 12");
-		pedido2.setValorNegociado(new BigDecimal(1350.00));
-		pedido2.setUrlImagem("https://m.media-amazon.com/images/I/51e3KdrHuCL._AC_SL1080_.jpg");
-		pedido2.setUrlProduto("https://www.amazon.com.br/Xiaomi-Redmi-Note-11-Graphite/dp/B09QSB4N2C/ref=sr_1_3?keywords=xiaomi+redmi+note+11&qid=1662079408&sprefix=Xiaomi+re%2Caps%2C131&sr=8-3&ufe=app_do%3Aamzn1.fos.25548f35-0de7-44b3-b28e-0f56f3f96147");
-		pedido2.setDescricao("Xiaomi Redmi Note 12 Graphite Gray 6GB Ram 128GB Rom");*/
-		
-		List<Pedido> pedidos =  pedidoRepository.findAllByUsuario(principal.getName());
-		
-		//List<Pedido> pedidos = Arrays.asList(pedido, pedido2);
-		
-		//model.addAttribute("pedidos", pedidos);
-		
-		//return "home";
-		
-	    ModelAndView mv = new ModelAndView("home");
-	    mv.addObject("pedidos", pedidos);
-	    return mv; 
+	public String home(Model model) {
+		List<Pedido> pedidos =  pedidoRepository.findByStatus(StatusPedido.ENTREGUE);
+	    model.addAttribute("pedidos", pedidos);
+	    return "home";
 	}
 	
 	@GetMapping("/{status}")
-	public ModelAndView buscarPorStatus(@PathVariable("status") String status, Model model, Principal principal) {
+	public String buscarPorStatus(@PathVariable("status") String status, Model model) {
+		List<Pedido> pedidos =  pedidoRepository.findByStatus(StatusPedido.valueOf(status.toUpperCase()));
 		
-		List<Pedido> pedidos =  pedidoRepository.findByStatusAndUserUserName(StatusPedido.valueOf(status.toUpperCase()), principal.getName());
-		
-	    ModelAndView mv = new ModelAndView("home");
-	    mv.addObject("pedidos", pedidos);
-	    mv.addObject("status", status);
-	    return mv; 
+	    model.addAttribute("pedidos", pedidos);
+	    model.addAttribute("status", status);
+	    return "home";
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)

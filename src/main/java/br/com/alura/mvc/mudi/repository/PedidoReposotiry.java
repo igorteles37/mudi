@@ -15,6 +15,7 @@ public interface PedidoReposotiry extends JpaRepository<Pedido, Long>{
 
 	
 	List<Pedido> findByStatusAndUserUserName(StatusPedido status, String username);
+	List<Pedido> findByStatus(StatusPedido status);
 	
 	@Query("SELECT p FROM Pedido p "
 			+ "JOIN FETCH p.user u "
