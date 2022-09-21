@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource ds;
 	
+	private static final String[] openURLs = { "/home/**"};
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
@@ -31,17 +34,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 */
 
 		// Login Autenticatio
-		http
+		//http.authorizeRequests().antMatchers(HttpMethod.GET, openURLs).permitAll();
+		
+		http.csrf().disable()
 		.authorizeRequests()
-			.anyRequest().authenticated()
-			.and()
-			.formLogin(form -> form
-				.loginPage("/login")
-				.defaultSuccessUrl("/usuario/pedidos", true)
-				.permitAll()
-			)
-			.logout(logout -> logout.logoutUrl("/logout"))
-			.csrf().disable();
+		.antMatchers(HttpMethod.GET, openURLs)
+			.permitAll()
+		.anyRequest()
+			.authenticated()
+		.and()
+		.formLogin(form -> form
+			.loginPage("/login")
+			.defaultSuccessUrl("/usuario/pedidos", true)
+			.permitAll()
+		)
+		.logout(logout -> {
+			logout.logoutUrl("/logout")
+				.logoutSuccessUrl("/home");
+		});
+			
 
 	}
 
