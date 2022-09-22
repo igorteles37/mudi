@@ -7,6 +7,7 @@
 			
 			<div class="card mt-3" >
 				<form th:object="${pedidoForm}" class="card-body" action="/home"  th:action="@{/pedido/atualizar/{id}(id=${pedidoForm.id})}" method="POST">
+					
 					<div class="form-group">
 						<label for="nomeProduto">Produto</label> 
 						<input th:field="*{nomeProduto}" th:errorclass="is-invalid" class="form-control" placeholder="nome do produto" /> 
@@ -41,6 +42,7 @@
 					</div>
 					
 					<button type="submit" value="Cadastrar" class="btn btn-primary">Atualizar</button>
+					<input type="hidden" name="_METHOD" value="PUT"/>
 				</form>
 			</div>
 			

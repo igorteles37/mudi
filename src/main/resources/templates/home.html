@@ -9,9 +9,12 @@
 			
 			<div class="card mb-3" th:each="pedido : ${pedidos}">
 				<th:block th:switch="${pedido.status.name()}">
-					<div th:case="AGUARDANDO" class="card-header alert-warning" th:text="${pedido.nomeProduto}">Nome do Produto</div>
-					<div th:case="APROVADO" class="card-header alert-success" th:text="${pedido.nomeProduto}">Nome do Produto</div>
-					<div th:case="ENTREGUE" class="card-header alert-dark" th:text="${pedido.nomeProduto}">Nome do Produto</div>
+					<span class="card-header alert-dark  ">
+						<span class="mt-0 p-0 d-flex justify-content-between">
+							<span  th:text="${pedido.nomeProduto}"> >Nome do Produto</span>
+							<span  th:text="${pedido.user.userName}">user</span>
+						</span>
+					</span>
 				</th:block>
 				
 				
@@ -20,7 +23,6 @@
 						<div class="col-12 col-sm-8 mb-3">
 							<div class="row">
 								<div class="col-md-5">Valor: 
-								
 									<span th:if="${pedido.valorNegociado} != null">	
 										<span th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorNegociado, 3, 'POINT', 2, 'COMMA')}">200,999</span>
 									</span>

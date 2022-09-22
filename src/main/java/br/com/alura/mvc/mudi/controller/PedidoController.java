@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException.MethodNotAllowed;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,6 +43,7 @@ public class PedidoController {
 	}
 	
 	@PostMapping("inserir")
+	@CacheEvict(value = "pedidos_home", allEntries = true)
 	public ModelAndView inserir(@Valid PedidoForm pedidoForm, BindingResult result) {
 
 		ModelAndView mv;
@@ -72,6 +75,7 @@ public class PedidoController {
 		return "redirect:/usuario/pedidos";
 	}
 	
+	@CacheEvict(value = "pedidos_home", allEntries = true)
 	@GetMapping("delete/{id}")
 	public String delete(@PathVariable Long id) {
 		
@@ -102,6 +106,7 @@ public class PedidoController {
 		return "pedido/formulario_atualizacao";
 	}
 	
+	@CacheEvict(value = "pedidos_home", allEntries = true)
 	@PostMapping("atualizar/{id}")
 	public String atualizar(@Valid PedidoForm pedidoForm, BindingResult result, @PathVariable Long id, Model model) {
 		
