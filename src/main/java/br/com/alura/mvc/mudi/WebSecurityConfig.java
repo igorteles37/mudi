@@ -11,9 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
@@ -25,6 +22,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final String[] openURLs = { "/home/**", "/api/**"};
 	
+	
+	
+	//Bean para encoder do passwor do HttpBasic
+	/*
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+		
+	}*/
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
@@ -34,12 +41,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 * .and() .httpBasic();
 		 */
 
-		// HttpAutentication
-		//http.authorizeRequests().antMatchers(HttpMethod.GET, openURLs).permitAll();
+		// SEGURANCA Http Basic
 		/*http.csrf().disable();
-		http.authorizeRequests().antMatchers(openURLs)
-				.fullyAuthenticated().and().httpBasic()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+		http.authorizeRequests()
+				.antMatchers(HttpMethod.GET, openURLs)
+					.permitAll()
+				.anyRequest()
+					.authenticated()
+				.and()
+				.httpBasic()
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+		
+		
 		
 		http.csrf().disable()
 		.authorizeRequests()
@@ -69,8 +83,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		/*UserDetails user = 
 				User.builder()
-					.username("maria")
-					.password(encoder.encode("maria"))
+					.username("igor")
+					.password(encoder.encode("igor"))
 					.roles("ADM")
 					.build();*/
 		
