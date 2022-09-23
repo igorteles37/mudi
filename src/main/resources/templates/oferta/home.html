@@ -1,0 +1,58 @@
+<html>
+	<head th:replace="~{base :: head}"></head>
+	<body>
+		<div th:replace="~{base :: logo}"></div>
+		<div class="container">
+			<div th:replace="~{base :: titulo('Pedidos Entregues')}"></div>
+			
+			<div class="alert-success" th:text="${mensagem} == 'Sucesso' ? 'Pedido Cadastrado com sucesso' : ''"></div>
+			
+			<div class="card mb-3" th:each="pedido : ${pedidos}">
+				<th:block th:switch="${pedido.status.name()}">
+					<span class="card-header alert-dark  ">
+						<span class="mt-0 p-0 d-flex justify-content-between">
+							<span  th:text="${pedido.nomeProduto}"> >Nome do Produto</span>
+							<span  th:text="${pedido.user.userName}">user</span>
+						</span>
+					</span>
+				</th:block>
+				
+				
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-sm-8 mb-3">
+							<div class="row">
+								<div class="col-md-5">Valor: 
+									<span th:if="${pedido.valorNegociado} != null">	
+										<span th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorNegociado, 3, 'POINT', 2, 'COMMA')}">200,999</span>
+									</span>
+									<span th:unless="${pedido.valorNegociado} != null">
+										<span th:text="''">200,999</span>
+									</span>
+									
+								</div>
+								<div class="col-md-7">Data da Entrega: <span th:text="${#temporals.format(pedido.dataDaEntrega, 'dd/MM/yyyy')}">10/02/2022</span></div>
+							</div>
+							
+							<div>Produto</div>
+							<div><input class="form-control" th:value="${pedido.urlProduto}"></div>
+							
+							<div>Descrição</div>
+							<div>
+								<textarea class="form-control" th:text="${pedido.descricao}">descrição do pedido</textarea>
+							</div>
+							
+						</div>
+						
+						<div class="col-12 col-sm-4" >
+							<div>
+								<img alt="" th:src="${pedido.urlImagem}" class="img-thumbnail">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

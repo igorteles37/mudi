@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource ds;
 	
-	private static final String[] openURLs = { "/home/**"};
+	private static final String[] openURLs = { "/home/**", "/api/**"};
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -33,13 +34,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 * .and() .httpBasic();
 		 */
 
-		// Login Autenticatio
+		// HttpAutentication
 		//http.authorizeRequests().antMatchers(HttpMethod.GET, openURLs).permitAll();
+		/*http.csrf().disable();
+		http.authorizeRequests().antMatchers(openURLs)
+				.fullyAuthenticated().and().httpBasic()
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
 		
 		http.csrf().disable()
 		.authorizeRequests()
 		.antMatchers(HttpMethod.GET, openURLs)
-			.permitAll()
+		.permitAll()
 		.anyRequest()
 			.authenticated()
 		.and()
@@ -73,6 +78,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.dataSource(ds)
 			.passwordEncoder(encoder);
 			//.withUser(user);
+		
+		
+		//USUÁRIO AUTENTICACAO HTTP BASIC
+		/*auth.inMemoryAuthentication()
+		.withUser("igor").password("123456").roles("ADMIN")
+		.and()
+		.withUser("joao").password("1234").roles("USER");*/
 	}
 
 
