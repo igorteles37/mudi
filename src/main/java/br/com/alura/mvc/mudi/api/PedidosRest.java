@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alura.mvc.dto.PedidoDto;
+import br.com.alura.mvc.mudi.dto.PedidoDto;
 import br.com.alura.mvc.mudi.model.Pedido;
 import br.com.alura.mvc.mudi.model.StatusPedido;
 import br.com.alura.mvc.mudi.repository.PedidoReposotiry;
@@ -49,7 +49,7 @@ public class PedidosRest {
 	@GetMapping("aguardando")
 	public ResponseEntity<List<PedidoDto>> getPedidosAguardandoOfertas(){
 		Sort sort = Sort.by("id").descending();
-		PageRequest paginacao = PageRequest.of(0, 5, sort);
+		PageRequest paginacao = PageRequest.of(0, 2, sort);
 		
 		List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.AGUARDANDO, paginacao);
 		

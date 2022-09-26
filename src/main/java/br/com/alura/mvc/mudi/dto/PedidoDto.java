@@ -1,4 +1,4 @@
-package br.com.alura.mvc.dto;
+package br.com.alura.mvc.mudi.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
