@@ -3,6 +3,8 @@ package br.com.alura.mvc.mudi.api;
 import java.net.URI;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,7 @@ public class OfertasRest {
 	private OfertaReposotiry ofertaRepository;
 	
 	@PostMapping
-	public ResponseEntity<?> criaOferta(@RequestBody RequisicaoNovaOferta requisicao, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> criaOferta(@Valid @RequestBody RequisicaoNovaOferta requisicao, UriComponentsBuilder uriBuilder) {
 	
 			Optional<Pedido> pedidoBuscado = pedidoRepository.findById( requisicao.getPedidoId());
 			if (!pedidoBuscado.isPresent()) {
