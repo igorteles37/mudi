@@ -1,6 +1,8 @@
 package br.com.alura.mvc.mudi.api;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -18,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.alura.mvc.mudi.dto.ExcecaoDTO;
 import br.com.alura.mvc.mudi.dto.OfertaDto;
-import br.com.alura.mvc.mudi.dto.PedidoDto;
 import br.com.alura.mvc.mudi.dto.RequisicaoNovaOferta;
 import br.com.alura.mvc.mudi.model.Oferta;
 import br.com.alura.mvc.mudi.model.Pedido;
@@ -70,8 +71,24 @@ public class OfertasRest {
 		
 		
 		return ResponseEntity.ok(new OfertaDto(ofertaBuscada.get()));
+
+	}
+	
+	@GetMapping("/pedido/{idPedido}")
+	public ResponseEntity<?> obterOfertasPedido(@PathVariable Long idPedido){
+		//List<Oferta> ofertas = ofertaRepository.findByPedidoId(idPedido);
+		List<Oferta> ofertas = ofertaRepository.obterOfertasPorPedido(idPedido);
 		
-		
+
+				if (ofertas.isEmpty()) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND)
+							.body(new ExcecaoDTO(this.getClass().getName(), "Nenhuma Oferta Econtrada"));
+				}
+				
+				List<OfertaDto> listaOfertasDto = new ArrayList<>();
+				ofertas.forEach(o->listaOfertasDto.add(new OfertaDto(o)));
+				
+				return ResponseEntity.ok(listaOfertasDto);
 	}
 
 	

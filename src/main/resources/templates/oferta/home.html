@@ -28,7 +28,7 @@
 								</div>
 							</div>
 							<div  class="col-md-7">
-								Data da Entrega: <input v-bind:class="{'is-invalid':pedido.erros.dataDaEntrega !== ''}" class="form-control" v-model="pedido.dataDaEntrega" />
+								Data da Entrega (DD/MM/YYYY): <input v-bind:class="{'is-invalid':pedido.erros.dataDaEntrega !== ''}" class="form-control" v-model="pedido.dataDaEntrega" />
 								<div v-if="pedido.erros.dataDaEntrega" class="invalid-feedback" >
 									{{pedido.erros.dataDaEntrega}}
 								</div>

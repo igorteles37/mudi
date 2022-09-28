@@ -19,12 +19,12 @@ public class RequisicaoNovaOferta {
 	
 	private Long pedidoId;
 	
-	@Pattern(regexp = "^\\d+(\\.\\d{2})?$")
-	@NotNull
+	@Pattern(message = "Valor inválido.", regexp = "^\\d+(\\.\\d{2})?$")
+	@NotNull(message = "Campo valor não pode ser vazio.")
 	private String valor;
 	
-	@NotNull
-	@Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$")
+	@NotNull(message = "Campo data não pode ser vazio")
+	@Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$", message = "Data inválida.")
 	private String dataDaEntrega;
 	
 	
