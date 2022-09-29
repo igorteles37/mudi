@@ -39,7 +39,7 @@ public class OfertasRest {
 	@PostMapping
 	public ResponseEntity<?> criaOferta(@Valid @RequestBody RequisicaoNovaOferta requisicao, UriComponentsBuilder uriBuilder) {
 	
-			Optional<Pedido> pedidoBuscado = pedidoRepository.findById( requisicao.getPedidoId());
+			Optional<Pedido> pedidoBuscado = pedidoRepository.findById(requisicao.getPedidoId());
 			if (!pedidoBuscado.isPresent()) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 						.body(new ExcecaoDTO(this.getClass().getName(), "Tópico não encontrado"));

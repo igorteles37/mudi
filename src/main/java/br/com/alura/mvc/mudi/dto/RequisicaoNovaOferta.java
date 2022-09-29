@@ -19,9 +19,9 @@ public class RequisicaoNovaOferta {
 	
 	private Long pedidoId;
 	
-	@Pattern(message = "Valor inválido.", regexp = "^\\d+(\\.\\d{2})?$")
+	//@Pattern(message = "Valor inválido.", regexp = "^\\d+(\\.\\d{2})?$")
 	@NotNull(message = "Campo valor não pode ser vazio.")
-	private String valor;
+	private BigDecimal valor;
 	
 	@NotNull(message = "Campo data não pode ser vazio")
 	@Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$", message = "Data inválida.")
@@ -36,10 +36,10 @@ public class RequisicaoNovaOferta {
 	public void setPedidoId(Long pedidoId) {
 		this.pedidoId = pedidoId;
 	}
-	public String getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
-	public void setValor(String valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
 	public String getDataDaEntrega() {
@@ -59,11 +59,8 @@ public class RequisicaoNovaOferta {
 		Oferta oferta = new Oferta();
 		oferta.setComentario(this.comentario);
 		oferta.setDataDaEntrega(LocalDate.parse(this.dataDaEntrega, formatter));
-		oferta.setValor(new BigDecimal(this.valor));
-		
+		oferta.setValor(this.valor);
 		return oferta;
-		
-		
 	}
 	
 	
